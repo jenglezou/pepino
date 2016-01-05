@@ -4,7 +4,7 @@ Scenario: This is the first sample scenario being run
 Given a client that has a name of "mr" and "client"
 When I run this first scenario
 And I look at the "contents" of the output
-Then I see that cucumber4vbs is working
+Then I see that <cucumber4vbs> is working
 
 Scenario: This is the second sample scenario being run
 Given I have provide this "value" to the test

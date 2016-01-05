@@ -1,5 +1,5 @@
 '***********************************************************************
-'Generated on 05/01/2016 09:29:32
+'Generated on 05/01/2016 14:48:51
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function Scenario_This_is_the_first_sample_scenario_being_run()
@@ -9,7 +9,7 @@ Function Scenario_This_is_the_first_sample_scenario_being_run()
 End Function
 
 '***********************************************************************
-'Generated on 05/01/2016 09:29:45
+'Generated on 05/01/2016 14:48:51
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function Given_a_client_that_has_a_name_of_Arg1_and_Arg2(Arg1, Arg2)
@@ -19,7 +19,7 @@ Function Given_a_client_that_has_a_name_of_Arg1_and_Arg2(Arg1, Arg2)
 End Function
 
 '***********************************************************************
-'Generated on 05/01/2016 09:29:48
+'Generated on 05/01/2016 14:48:52
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function When_I_run_this_first_scenario()
@@ -29,7 +29,7 @@ Function When_I_run_this_first_scenario()
 End Function
 
 '***********************************************************************
-'Generated on 05/01/2016 09:29:48
+'Generated on 05/01/2016 14:48:52
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function When_And_I_look_at_the_Arg1_of_the_output(Arg1)
@@ -39,17 +39,7 @@ Function When_And_I_look_at_the_Arg1_of_the_output(Arg1)
 End Function
 
 '***********************************************************************
-'Generated on 05/01/2016 09:29:49
-'Step function not found. Template function generated below ...
-'***********************************************************************
-Function Then_I_see_that_cucumber4vbs_is_working()
-	MsgBox "A generated step function (because step function not found):" & vbNewLine & "- Then I see that cucumber4vbs is working ", ,"Then_I_see_that_cucumber4vbs_is_working()"
-	'**** Add code for this step ****
-	Then_I_see_that_cucumber4vbs_is_working = False 'Set to False for steps when generated.
-End Function
-
-'***********************************************************************
-'Generated on 05/01/2016 09:29:49
+'Generated on 05/01/2016 14:48:53
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function Scenario_This_is_the_second_sample_scenario_being_run()
@@ -59,7 +49,7 @@ Function Scenario_This_is_the_second_sample_scenario_being_run()
 End Function
 
 '***********************************************************************
-'Generated on 05/01/2016 09:29:49
+'Generated on 05/01/2016 14:48:53
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function Given_I_have_provide_this_Arg1_to_the_test(Arg1)
@@ -69,7 +59,7 @@ Function Given_I_have_provide_this_Arg1_to_the_test(Arg1)
 End Function
 
 '***********************************************************************
-'Generated on 05/01/2016 09:29:50
+'Generated on 05/01/2016 14:48:54
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function When_I_try_to_pass_values_Arg1_and_Arg2_as_parameters(Arg1, Arg2)
@@ -79,7 +69,7 @@ Function When_I_try_to_pass_values_Arg1_and_Arg2_as_parameters(Arg1, Arg2)
 End Function
 
 '***********************************************************************
-'Generated on 05/01/2016 09:29:50
+'Generated on 05/01/2016 14:48:54
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function When_And_I_also_pass_the_following_Arg1(Arg1)
@@ -89,7 +79,7 @@ Function When_And_I_also_pass_the_following_Arg1(Arg1)
 End Function
 
 '***********************************************************************
-'Generated on 05/01/2016 09:29:51
+'Generated on 05/01/2016 14:48:55
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function When_And_I_try_to_check_if_it_really_works_Arg1(Arg1)
@@ -99,7 +89,7 @@ Function When_And_I_try_to_check_if_it_really_works_Arg1(Arg1)
 End Function
 
 '***********************************************************************
-'Generated on 05/01/2016 09:29:51
+'Generated on 05/01/2016 14:48:55
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function Then_I_know_the_parser_is_working()
@@ -109,7 +99,7 @@ Function Then_I_know_the_parser_is_working()
 End Function
 
 '***********************************************************************
-'Generated on 05/01/2016 09:29:52
+'Generated on 05/01/2016 14:48:56
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function Then_And_I_know_the_Arg1_are_read(Arg1)
@@ -119,12 +109,22 @@ Function Then_And_I_know_the_Arg1_are_read(Arg1)
 End Function
 
 '***********************************************************************
-'Generated on 05/01/2016 09:29:52
+'Generated on 05/01/2016 14:48:56
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function Then_But_it_should_also_have_Arg1_and_Arg2(Arg1, Arg2)
 	MsgBox "A generated step function (because step function not found):" & vbNewLine & "- Then But it should also have ""one"" and: ""|value|~|xxxxx|""", ,"Then_But_it_should_also_have_Arg1_and_Arg2(Arg1, Arg2)"
 	'**** Add code for this step ****
 	Then_But_it_should_also_have_Arg1_and_Arg2 = False 'Set to False for steps when generated.
+End Function
+
+'***********************************************************************
+'Generated on 05/01/2016 15:05:45
+'Step function not found. Template function generated below ...
+'***********************************************************************
+Function Then_I_see_that_cucumber4vbs_is_working(pCucumber4vbs)
+	MsgBox "A generated step function (because step function not found):" & vbNewLine & "- Then I see that <cucumber4vbs> is working ", ,"Then_I_see_that_cucumber4vbs_is_working(pCucumber4vbs)"
+	'**** Add code for this step ****
+	Then_I_see_that_cucumber4vbs_is_working = False 'Set to False for steps when generated.
 End Function
 

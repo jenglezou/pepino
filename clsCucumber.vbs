@@ -4,7 +4,6 @@ Dim oCucumber : Set oCucumber = New clsCucumber
 
 oCucumber.FeaturesPath = ".\features"
 oCucumber.StepsPath = ".\steps"
-oCucumber.StepsOutputFile = "GeneratedSteps.vbs"
 'oCucumber.RegenerateSpecs = True
 oCucumber.ShowDebug = True
 
@@ -15,7 +14,6 @@ Class clsCucumber
 	Private gsFeaturesPath
 	Private gsFeaturesList
 	Private gsStepsPath
-	Private gsStepsOutputFile
 	Private gbRegenerateSpecs			'True = don't run - just regenerate
 	
 	Private gsGeneratedSteps			'Text of generated step functions (concatenated)
@@ -72,15 +70,6 @@ Class clsCucumber
 	End Property
 
 	'******************************************************************************
-	Public Property Let StepsOutputFile(sFileName)
-		gsStepsOutputFile = sFileName
-	End Property
-	
-	Public Property Get StepsOutputFile()
-		StepsOutputFile = gsStepsOutputFile
-	End Property
-
-	'******************************************************************************
 	Private Sub Class_Initialize()		'On Set to New instance
 		Dim oFS, sPath
 		
@@ -90,7 +79,6 @@ Class clsCucumber
 
 		gsFeaturesPath = sPath & "/features"
 		gsStepsPath = sPath & "/steps"
-		gsStepsOutputFile = "StepsTemplateFile.vbs"
 		gbRegenerateSpecs = False
 		gsGeneratedSteps = ""
 	End Sub
@@ -100,14 +88,12 @@ Class clsCucumber
 	
 	'******************************************************************************
 	Public Sub Run()
-		LoadSteps()
+		LoadExistingSteps()
 		ExecuteFeatures()
-		
-		'If gsGeneratedSteps <> "" Then WriteFile gsStepsPath & "\" & gsStepsOutputFile, gsGeneratedSteps
 	End Sub
 
 	'******************************************************************************
-	Private Sub LoadSteps()
+	Private Sub LoadExistingSteps()
 		Dim oFS, oFile, oFolder
 		
 		Set oFS = CreateObject("Scripting.FileSystemObject")
@@ -167,7 +153,6 @@ Class clsCucumber
 			End If
 		Wend
 
-		'Call ShowArr(arrCache)
 		Call ShowDebugMsg(ArrayText(arrCache))
 		
 		oFile.Close				
@@ -233,7 +218,6 @@ Class clsCucumber
 			iLine = iLine + 1
 		Wend
 
-		'Call ShowStepArr(arrStepFunctionSpecs, arrStepText)
 		Call ShowDebugMsg(ArrayText(arrStepText))
 		Call ShowDebugMsg(ArrayText(arrStepFunctionSpecs))
 
@@ -292,19 +276,34 @@ Class clsCucumber
 	'**********************************************************************************
 	'Generates the step function call
 	Private Function GenerateStepFunctionCallOrSpec(sCallOrSpec, sStepText)
-		Dim sStepFunctionText, arrStep, sArgs, iStep, iArgCount
+		Dim sStepFunctionText, arrTokens, iToken, sArgs, iArgCount
 	
 		sStepFunctionText = sStepText
 		iArgCount = 0
 		sArgs = ""
-		arrStep = Split(sStepFunctionText, """")
-		For iStep = 1 To UBound(arrStep) Step 2
+		
+		'First the arguments in quotes
+		arrTokens = Split(sStepFunctionText, """")
+		For iToken = 1 To UBound(arrTokens) Step 2
 			iArgCount = iArgCount+1
-			sStepFunctionText = Replace(sStepFunctionText, """" & arrStep(iStep) & """", "Arg" & iArgCount)
+			sStepFunctionText = Replace(sStepFunctionText, """" & arrTokens(iToken) & """", "Arg" & iArgCount)
 			If UCase(Left(sCallOrSpec, 1)) = "S" Then
 				sArgs = sArgs & ", Arg" & iArgCount									'Spec
 			Else
-				sArgs = sArgs & ", " & """" & arrStep(iStep) & """"					'Call
+				sArgs = sArgs & ", " & """" & arrTokens(iToken) & """"				'Call
+			End If 
+		Next 
+		
+		'Then the parameters in <>
+		iArgCount = 0
+		arrTokens = Split(Replace(sStepFunctionText, ">", "<"), "<")
+		For iToken = 1 To UBound(arrTokens) Step 2
+			iArgCount = iArgCount+1
+			sStepFunctionText = Replace(sStepFunctionText, "<" & arrTokens(iToken) & ">", arrTokens(iToken))
+			If UCase(Left(sCallOrSpec, 1)) = "S" Then
+				sArgs = sArgs & ", " & "p" & Capitalise(arrTokens(iToken))			'Spec
+			Else
+				sArgs = sArgs & ", " & """<" & arrTokens(iToken) & ">"""			'Call
 			End If 
 		Next 
 	
@@ -380,36 +379,14 @@ End Sub
 
 '**********************************************************************************
 Function ArrayText(arrOfText)
-	Dim i, sTemp1		
-	For i = 0 To UBound(arrOfText)
-		sTemp1 = sTemp1 & arrOfText(i) & vbNewLine
+	Dim sLine, sLines		
+	For Each sLine In arrOfText
+		sLines = sLines & sLine & vbNewLine
 	Next
 	
-	ArrayText = sTemp1
+	ArrayText = sLines
 End Function
 	
-
-'**********************************************************************************
-Sub ShowArr(arrOfText)
-	Dim i, sTemp1		
-	For i = 0 To UBound(arrOfText)
-		sTemp1 = sTemp1 & arrOfText(i) & vbNewLine
-	Next
-	
-	ShowDebugMsg sTemp1
-End Sub
-
-'**********************************************************************************
-Sub ShowStepArr(arrStepFunctionSpecs, arrStepText)
-	Dim i, sTemp1
-	For i = 0 To UBound(arrStepText)
-		sTemp1 = sTemp1 & arrStepText(i) & vbNewLine
-		sTemp1 = sTemp1 & arrStepFunctionSpecs(i) & vbNewLine
-	Next
-	
-	ShowDebugMsg sTemp1
-End Sub
-
 '**********************************************************************************
 Sub ShowDebugMsg(sText)
 	If oCucumber.ShowDebug = True Then MsgBox sText
