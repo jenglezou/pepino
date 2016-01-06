@@ -19,3 +19,12 @@ And I know the "values" are read
 But it should also have "one" and:
 |value|
 |xxxxx|
+
+Scenario Outline: This is the third sample scenario being run
+Given I have provide this "value" to the test
+When I try to pass values <name> and <address> and <phone> as parameters
+Then I know the parser is working
+Examples:
+|name|address|phone|
+|abc| def | 123456|
+|xyzxyz|lmnop|654321|

@@ -1,0 +1,7 @@
+X_BEGINSCENARIO01_DATA_Arg1(Arg1)
+X_Scenario_Google_search()
+Given_the_browser_is_open()
+When_I_navigate_to_Arg1(Arg1)
+When_And_I_search_for_Arg1(Arg1)
+Then_the_browser_title_contains_Arg1(Arg1)
+X_ENDSCENARIO_01()

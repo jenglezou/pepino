@@ -101,7 +101,7 @@ Class clsCucumber
 		If oFS.FolderExists(gsStepsPath) Then
 			Set oFolder = oFS.GetFolder(gsStepsPath)
 			For Each oFile in oFolder.Files
-				FileExecuteGlobal(gsStepsPath & "/" & oFile.Name)
+				If UCase(Right(oFile.Name, 3)) = "VBS" Then FileExecuteGlobal(gsStepsPath & "/" & oFile.Name)
 			Next
 			Set oFile = Nothing
 			Set oFolder = Nothing
@@ -127,7 +127,14 @@ Class clsCucumber
 				Call LoadFeatureFile(oFile.Path, garrCachedFeatureFile)	'Read and cahe the features in the file
 				Call GetScenariosAndSteps (garrCachedFeatureFile, garrStepFunctionSpecs, garrStepFunctionCalls, garrStepText) 'Process the features in the file
 				MsgBox "Executed " & oFile.Name & vbnewline & "Result = " & ExecuteScenarios(garrStepFunctionSpecs, garrStepFunctionCalls, garrStepText, gbRegenerateSpecs, gsGeneratedSteps)				
-				If gsGeneratedSteps <> "" Then WriteFile gsStepsPath & "\" & sFilename, gsGeneratedSteps
+				If gsGeneratedSteps <> "" Then 
+					WriteFile gsStepsPath & "\" & sFilename, gsGeneratedSteps, 8
+				End If
+				
+				WriteFile gsStepsPath & "\" & "Feature_" & Capitalise(Left(oFile.Name, Len(oFile.Name) - Len(".Feature"))) & "_FunctionSpecs.txt" , ArrayText(garrStepFunctionSpecs), 2
+				WriteFile gsStepsPath & "\" & "Feature_" & Capitalise(Left(oFile.Name, Len(oFile.Name) - Len(".Feature"))) & "_FunctionCalls.txt" , ArrayText(garrStepFunctionCalls), 2
+				WriteFile gsStepsPath & "\" & "Feature_" & Capitalise(Left(oFile.Name, Len(oFile.Name) - Len(".Feature"))) & "_StepText.txt" , ArrayText(garrStepText), 2
+
 			End if		
 		Next	
 		
@@ -166,6 +173,11 @@ Class clsCucumber
 		Dim sStepType
 		Dim iLine, iNumLines, iLastStep
 		Dim iStep, sNextLine, sTable
+		Dim iScenarioStartLine			'Line where scenario starts 
+		Dim iScenarioNumber				'First scenario is one etc
+		
+		iScenarioNumber = 0
+		iScenarioStartLine = 0
 		
 		iStep = 0
 		iLine = 0
@@ -180,6 +192,13 @@ Class clsCucumber
 			Case "FEATURE:"
 				sStepType = "Feature"
 				sFeature = Replace(Trim(Right(sLine, Len(sLine) - Len("FEATURE:"))), " ", "_")
+			Case "SCENARIO:", "SCENARIO"
+				sKeyword = Split(sLine, ":")(0)
+				sStepType = Replace(sKeyword, " ", "")
+				If iScenarioNumber > 0 Then Call AddToSteps("X_ENDSCENARIO_" & Right("00" & iScenarioNumber, 2) , arrStepFunctionSpecs, arrStepFunctionCalls, arrStepText)
+				iScenarioNumber = iScenarioNumber + 1
+				iScenarioStartLine = AddToSteps("X_BEGINSCENARIO" &  Right("00" & iScenarioNumber, 2) & "_DATA ""|default|~|none|""", arrStepFunctionSpecs, arrStepFunctionCalls, arrStepText)
+				Call AddToSteps("X_" & sLine, arrStepFunctionSpecs, arrStepFunctionCalls, arrStepText)
 			Case "GIVEN", "WHEN", "THEN"
 				sStepType = Capitalise(sKeyword)
 				
@@ -198,25 +217,41 @@ Class clsCucumber
 					sTable = Left(sTable, Len(sTable) - 1) & """"	'Remove the end comma and add a double quote
 				End If
 
-				Call AddToSteps(sLine & " " & sTable, arrStepFunctionSpecs, arrStepFunctionCalls,arrStepText)
+				Call AddToSteps(sLine & " " & sTable, arrStepFunctionSpecs, arrStepFunctionCalls, arrStepText)
 				sTable = ""
 			Case "AND", "BUT"
 				arrFeatureLines(iLine) = sStepType & " " & sLine	'Change it to a Given, When or Then
 				iLine = iLine - 1 									'Jump back a line to reprocess as a Given, When or Then
-			Case "SCENARIO:"
-				sStepType = "Scenario"
-				Call AddToSteps(sLine, arrStepFunctionSpecs, arrStepFunctionCalls, arrStepText)
 			Case "BACKGROUND:"
 				sStepType = "Background"
-			Case "SCENARIO OUTLINE:"
-				sStepType = "OutLine"
 			Case "EXAMPLES:"
 				sStepType = "Examples"
+				'Is there a table of data?
+				sTable = """"
+				sNextLine = Trim(Replace(arrFeatureLines(iLine + 1), vbTab, " ")) 'Next line
+				Do While Left(sNextLine, 1) = "|"
+					sTable = sTable & sNextLine & "~"
+					iLine = iLine + 1
+					If iLine = iNumLines Then Exit Do 			'In case it's the last row
+					sNextLine = Trim(Replace(arrFeatureLines(iLine + 1), vbTab, " "))
+				Loop
+				iLine = iLine - 1								'Finished the table so jump back a line
+				sTable = Left(sTable, Len(sTable) - 1) & """"	'Remove the end comma and add a double quote
+
+				arrStepFunctionSpecs(iScenarioStartLine) = GenerateStepFunctionCallOrSpec("Spec", "X_BEGINSCENARIO" &  Right("00" & iScenarioNumber, 2) & "_DATA " & sTable)
+				arrStepFunctionCalls(iScenarioStartLine) = GenerateStepFunctionCallOrSpec("Call", "X_BEGINSCENARIO" &  Right("00" & iScenarioNumber, 2) & "_DATA " & sTable)
+				arrStepText(iScenarioStartLine) = "X_BEGINSCENARIO" &  Right("00" & iScenarioNumber, 2) & "_DATA " & sTable
+
+				Call AddToSteps("X_" & sLine & " " & sTable, arrStepFunctionSpecs, arrStepFunctionCalls, arrStepText)
+				sTable = ""
 			Case Else
+
 			End Select
 			
 			iLine = iLine + 1
 		Wend
+
+		Call AddToSteps("X_ENDSCENARIO_" & Right("00" & iScenarioNumber, 2) , arrStepFunctionSpecs, arrStepFunctionCalls, arrStepText)
 
 		Call ShowDebugMsg(ArrayText(arrStepText))
 		Call ShowDebugMsg(ArrayText(arrStepFunctionSpecs))
@@ -225,7 +260,7 @@ Class clsCucumber
 
 
 	'**********************************************************************************
-	Private Sub AddToSteps(sStepText, arrStepFunctionSpecs, arrStepFunctionCalls, arrStepText)
+	Private Function AddToSteps(sStepText, arrStepFunctionSpecs, arrStepFunctionCalls, arrStepText)
 	
 		Dim iUBound : iUBound = UBound(arrStepText)
 		If IsEmpty(arrStepText(iUBound)) Then iUBound = iUBound - 1
@@ -236,7 +271,8 @@ Class clsCucumber
 		arrStepFunctionCalls(iUBound+1) = GenerateStepFunctionCallOrSpec("Call", Replace(sStepText, ":", ""))
 		arrStepText(iUBound+1) = sStepText
 		
-	End Sub
+		AddToSteps = iUBound+1
+	End Function
 	
 	'**********************************************************************************
 	Private Function ExecuteScenarios(arrStepFunctionSpecs, arrStepFunctionCalls, arrStepText, bRegenerateSpecs, sGeneratedSteps)
@@ -248,7 +284,7 @@ Class clsCucumber
 		For iStep = 0 To UBound(arrStepText)
 			sGeneratedStep = ""
 			sGeneratedReturn = "False"
-			If Left(arrStepFunctionSpecs(iStep), 1) = "S" Then sGeneratedReturn = "True"
+			If Left(arrStepFunctionSpecs(iStep), 1) = "X" Then sGeneratedReturn = "True"
 			
 			If Not bRegenerateSpecs Then		
 				On Error Resume Next
@@ -364,13 +400,13 @@ Function Capitalise(sText)
 End Function
 
 '******************************************************************************
-Sub WriteFile(sFile, sText)
+Sub WriteFile(sFile, sText, iMode)
 	Dim oFS, oFile
 	Const ForReading = 1, ForWriting = 2, ForAppending = 8
 	
 	Set oFS = CreateObject("Scripting.FileSystemObject")
 	If oFS.FolderExists(oFS.GetParentFolderName(sFile)) Then
-		Set oFile = oFS.OpenTextFile(sFile, ForAppending, True)
+		Set oFile = oFS.OpenTextFile(sFile, iMode, True)
 		oFile.Write sText
 		oFile.Close
 	End If
