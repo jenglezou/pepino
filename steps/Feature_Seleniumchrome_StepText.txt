@@ -1,4 +1,4 @@
-X_BEGINSCENARIO01_DATA "|default|~|none|"
+X_BEGINSCENARIO01~~"1"~~"|default|~|none|"
 X_Scenario: Google search
 Given the browser is open 
 When I navigate to "https://www.google.co.uk" 
