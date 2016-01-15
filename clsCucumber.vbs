@@ -1,13 +1,15 @@
 Option Explicit
 
-Dim oCucumber : Set oCucumber = New clsCucumber
+'Dim oCucumber : Set oCucumber = New clsCucumber
 
-oCucumber.FeaturesPath = ".\features"
-oCucumber.StepsPath = ".\steps"
+'oCucumber.FeaturesPath = ".\features"
+'oCucumber.FeaturesList = "SeleniumChrome"
+
+'oCucumber.StepsPath = ".\steps"
 'oCucumber.RegenerateSpecs = True
 'oCucumber.ShowDebug = True
 
-oCucumber.Run()
+'oCucumber.Run()
 
 Class clsCucumber
 '**********************************************************************************
@@ -81,6 +83,7 @@ Class clsCucumber
 		Set oFS = Nothing
 
 		gsFeaturesPath = sPath & "/features"
+		gsFeaturesList = ""
 		gsStepsPath = sPath & "/steps"
 		gbRegenerateSpecs = False
 		gsGeneratedSteps = ""
@@ -108,7 +111,7 @@ Class clsCucumber
 		If oFS.FolderExists(gsStepsPath) Then
 			Set oFolder = oFS.GetFolder(gsStepsPath)
 			For Each oFile in oFolder.Files
-				If UCase(Right(oFile.Name, 3)) = "VBS" Then FileExecuteGlobal(gsStepsPath & "/" & oFile.Name)
+				If UCase(Right(oFile.Name, 4)) = ".VBS" Then FileExecuteGlobal(gsStepsPath & "/" & oFile.Name)
 			Next
 			Set oFile = Nothing
 			Set oFolder = Nothing
@@ -129,7 +132,8 @@ Class clsCucumber
 		Set oFolder = oFS.GetFolder(gsFeaturesPath)
 			
 		For Each oFile In oFolder.Files
-			If UCase(Right(UCase(oFile.Name), Len(".FEATURE"))) = ".FEATURE" Then
+			If UCase(Right(UCase(oFile.Name), Len(".FEATURE"))) = ".FEATURE"  Then
+If (gsFeaturesList = "") Or (Left(UCase(oFile.Name), Len(oFile.Name)-Len(".FEATURE")) = UCase(Trim(gsFeaturesList))) Then 
 				giBackgroundBegin = -1
 				giBackgroundEnd = -1
 
@@ -152,6 +156,7 @@ WriteFile gsStepsPath & "\" & "Feature_" & Capitalise(Left(oFile.Name, Len(oFile
 				End If
 			
 			End if		
+End If
 		Next	
 		
 		Set oFolder = Nothing
@@ -295,8 +300,10 @@ WriteFile gsStepsPath & "\" & "Feature_" & Capitalise(Left(oFile.Name, Len(oFile
 		ReDim Preserve arrStepFunctionSpecs(iUBound + 1)
 		ReDim Preserve arrStepFunctionCalls(iUBound + 1)
 		ReDim Preserve arrStepText(iUBound + 1)
-		arrStepFunctionSpecs(iUBound+1) = GenerateStepFunctionCallOrSpec("Spec", Replace(sStepText, ":", ""))
-		arrStepFunctionCalls(iUBound+1) = GenerateStepFunctionCallOrSpec("Call", Replace(sStepText, ":", ""))
+		'arrStepFunctionSpecs(iUBound+1) = GenerateStepFunctionCallOrSpec("Spec", Replace(sStepText, ":", ""))
+		'arrStepFunctionCalls(iUBound+1) = GenerateStepFunctionCallOrSpec("Call", Replace(sStepText, ":", ""))
+		arrStepFunctionSpecs(iUBound+1) = GenerateStepFunctionCallOrSpec("Spec", sStepText)
+		arrStepFunctionCalls(iUBound+1) = GenerateStepFunctionCallOrSpec("Call", sStepText)
 		arrStepText(iUBound+1) = sStepText
 		
 		AddToSteps = iUBound+1
@@ -363,10 +370,12 @@ Dim sTempData
 				
 				If Not bRegenerateSpecs Then		
 					'MsgBox arrStepFunctionCalls(iStep),,"********************"
-					On Error Resume Next
+On Error Resume Next
 					'sTempData = ReplaceParameters(arrStepFunctionCalls(iStep), arrTableData(iIter-1))
 					'If sTempData <> arrStepFunctionCalls(iStep) Then MsgBox sTempData,,arrStepFunctionCalls(iStep)
 					'MsgBox sTempData & vbNewLine & arrStepFunctionCalls(iStep),,"********************"
+'msgbox "bRetVal = " & ReplaceParameters(arrStepFunctionCalls(iStep), arrTableData(iIter-1))
+				
 					Execute "bRetVal = " & ReplaceParameters(arrStepFunctionCalls(iStep), arrTableData(iIter-1))
 					If Err.Number = 13 Then
 						If Not gdicStepFunctionsCreated.Exists(arrStepFunctionSpecs(iStep)) Then 
@@ -377,7 +386,7 @@ Dim sTempData
 					Else 
 						'ShowDebugMsg bRetVal
 					End If
-					On Error Goto 0
+On Error Goto 0
 				Else
 					If Not gdicStepFunctionsCreated.Exists(arrStepFunctionSpecs(iStep)) Then 
 						gdicStepFunctionsCreated.Add arrStepFunctionSpecs(iStep), "Created"
@@ -430,9 +439,9 @@ Dim sTempData
 	
 		If sArgs <> "" Then
 			sArgs = Right(sArgs, Len(sArgs)-2)										'Function arguments
-			sStepFunctionText = Replace(Replace(Trim(sStepFunctionText), " ", "_") & "(" & sArgs & ")", "__", "_")
+			sStepFunctionText = Replace(Replace(Trim(Replace(sStepFunctionText, ":", "")), " ", "_") & "(" & sArgs & ")", "__", "_")
 		Else
-			sStepFunctionText = Replace(Trim(sStepFunctionText), " ", "_") & "()"	'No function arguments
+			sStepFunctionText = Replace(Trim(Replace(sStepFunctionText, ":", "")), " ", "_") & "()"	'No function arguments
 		End If
 	
 		GenerateStepFunctionCallOrSpec = sStepFunctionText
@@ -587,3 +596,4 @@ Function XUnitTestClose(sXUnitFileText)
 					"</testsuite>" & vbNewLine & _
 					"</testsuites>" 
 End Function
+

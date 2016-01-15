@@ -5,3 +5,11 @@ When I navigate to "https://www.google.co.uk"
 When And I search for "Eiffel Tower" 
 Then the browser title contains "Eiffel Tower" 
 X_ENDSCENARIO_01
+X_BEGINSCENARIO02~~"1"~~"|default|~|none|"
+X_Scenario: Google search
+Given the browser is open 
+When I navigate to "https://www.google.co.uk" 
+When And I search for "Ghent" 
+Then the browser title contains "Ghent" 
+Then But it does not contain "qwerty" 
+X_ENDSCENARIO_02
