@@ -1,27 +1,32 @@
 Option Explicit
 
-'Dim oCucumber : Set oCucumber = New clsCucumber
+Dim oCucumber : Set oCucumber = New clsCucumber
 
-'oCucumber.FeaturesPath = ".\features"
+oCucumber.FeaturesPath = ".\features"
 'oCucumber.FeaturesList = "SeleniumChrome"
 
-'oCucumber.StepsPath = ".\steps"
+oCucumber.StepsPath = ".\steps"
+oCucumber.ResultsPath = ".\results"
 'oCucumber.RegenerateSpecs = True
 'oCucumber.ShowDebug = True
 
-'oCucumber.Run()
+oCucumber.Run()
 
 Class clsCucumber
 '**********************************************************************************
 	Private gsFeaturesPath
 	Private gsFeaturesList
 	Private gsStepsPath
+	Private gsResultsPath
 	Private gbRegenerateSpecs			'True = don't run - just regenerate
 	
 	Public gsGeneratedSteps			'Text of generated step functions (concatenated)
 	Public garrStepFunctionSpecs()
 	Public garrStepFunctionCalls()
 	Public garrStepText()
+	Public garrResults()
+	Public garrXUnitResults()
+	
 	Private garrCachedFeatureFile()
 	Private gdicStepFunctionsCreated
 	Public giBackgroundBegin
@@ -75,6 +80,15 @@ Class clsCucumber
 	End Property
 
 	'******************************************************************************
+	Public Property Let ResultsPath(sPath)
+		gsResultsPath = sPath
+	End Property
+
+	Public Property Get ResultsPath()
+		ResultsPath = gsResultsPath
+	End Property
+
+	'******************************************************************************
 	Private Sub Class_Initialize()		'On Set to New instance
 		Dim oFS, sPath
 		
@@ -85,6 +99,7 @@ Class clsCucumber
 		gsFeaturesPath = sPath & "/features"
 		gsFeaturesList = ""
 		gsStepsPath = sPath & "/steps"
+		gsStepsPath = sPath & "/results"
 		gbRegenerateSpecs = False
 		gsGeneratedSteps = ""
 		giBackgroundBegin = -1
@@ -125,38 +140,43 @@ Class clsCucumber
 
 	'******************************************************************************
 	Private Sub ExecuteFeatures()
-		Dim oFS, oFolder, oFile, sFilename
+		Dim oFS, oFolder, oFile, sFilename, sFeature
 		Dim iStartLine, iEndLine
 		
 		Set oFS = CreateObject("Scripting.FileSystemObject")
 		Set oFolder = oFS.GetFolder(gsFeaturesPath)
 			
 		For Each oFile In oFolder.Files
+			ReDim garrResults(0)
+			ReDim garrXUnitResults(0)
 			If UCase(Right(UCase(oFile.Name), Len(".FEATURE"))) = ".FEATURE"  Then
-If (gsFeaturesList = "") Or (Left(UCase(oFile.Name), Len(oFile.Name)-Len(".FEATURE")) = UCase(Trim(gsFeaturesList))) Then 
-				giBackgroundBegin = -1
-				giBackgroundEnd = -1
-
-				sFilename = "Feature_" & Capitalise(Left(oFile.Name, Len(oFile.Name) - Len(".Feature"))) & "_GeneratedSteps.vbs"
-
-				Call LoadFeatureFile(oFile.Path, garrCachedFeatureFile)	'Read and cahe the features in the file
-				Call GetScenariosAndSteps (garrCachedFeatureFile, garrStepFunctionSpecs, garrStepFunctionCalls, garrStepText) 'Process the features in the file
+				If (gsFeaturesList = "") Or (Left(UCase(oFile.Name), Len(oFile.Name)-Len(".FEATURE")) = UCase(Trim(gsFeaturesList))) Then 
+					giBackgroundBegin = -1
+					giBackgroundEnd = -1
+	
+					sFilename = "Feature_" & Capitalise(Left(oFile.Name, Len(oFile.Name) - Len(".Feature"))) & "_GeneratedSteps.vbs"
+	
+					Call LoadFeatureFile(oFile.Path, garrCachedFeatureFile)	'Read and cache the features in the file
+					sFeature = GetScenariosAndSteps(garrCachedFeatureFile, garrStepFunctionSpecs, garrStepFunctionCalls, garrStepText, garrResults, garrXUnitResults) 'Process the features in the file
 WriteFile gsStepsPath & "\" & "Feature_" & Capitalise(Left(oFile.Name, Len(oFile.Name) - Len(".Feature"))) & "_FunctionSpecs.txt" , ArrayText(garrStepFunctionSpecs), 2
 WriteFile gsStepsPath & "\" & "Feature_" & Capitalise(Left(oFile.Name, Len(oFile.Name) - Len(".Feature"))) & "_FunctionCalls.txt" , ArrayText(garrStepFunctionCalls), 2
 WriteFile gsStepsPath & "\" & "Feature_" & Capitalise(Left(oFile.Name, Len(oFile.Name) - Len(".Feature"))) & "_StepText.txt" , ArrayText(garrStepText), 2
- 				iStartLine = 0
-				If giBackgroundBegin > -1 Then iStartLine = giBackgroundEnd + 1
-				iEndLine = UBound(garrStepText)
-				gsGeneratedSteps = ""
-				MsgBox "Executed " & oFile.Name & vbnewline & "Result = " & _
-					ExecuteScenarios(iStartLine, iEndLine, garrStepFunctionSpecs, garrStepFunctionCalls, garrStepText, gbRegenerateSpecs, gsGeneratedSteps)				
+	 				iStartLine = 0
+					If giBackgroundBegin > -1 Then iStartLine = giBackgroundEnd + 1
+					iEndLine = UBound(garrStepText)
+					gsGeneratedSteps = ""
+					MsgBox "Executed " & oFile.Name & vbnewline & "Result = " & _
+						ExecuteScenarios(iStartLine, iEndLine, sFeature, garrStepFunctionSpecs, garrStepFunctionCalls, garrStepText, gbRegenerateSpecs, gsGeneratedSteps, garrResults, garrXUnitResults)', iResult)				
 
-				If gsGeneratedSteps <> "" Then 
-					WriteFile gsStepsPath & "\" & sFilename, gsGeneratedSteps, 8
-				End If
-			
-			End if		
-End If
+WriteFile gsResultsPath & "\" & "Feature_" & Capitalise(Left(oFile.Name, Len(oFile.Name) - Len(".Feature"))) & "_Result.txt" , ArrayText(garrResults), 2
+WriteFile gsResultsPath & "\" & "Feature_" & Capitalise(Left(oFile.Name, Len(oFile.Name) - Len(".Feature"))) & "_Result.xml" , ArrayText(garrXUnitResults) & "</testsuite>" & vbNewLine & "</testsuites>", 2
+	
+					If gsGeneratedSteps <> "" Then 
+						WriteFile gsStepsPath & "\" & sFilename, gsGeneratedSteps, 8
+					End If
+				
+				End if		
+			End If
 		Next	
 		
 		Set oFolder = Nothing
@@ -165,7 +185,7 @@ End If
 	
 	'**********************************************************************************
 	Private Sub LoadFeatureFile(sFileName, arrCache)
-		Dim oFS, oFile, sFile, sLine, sFeature
+		Dim oFS, oFile, sFile, sLine
 		Dim sStepType
 		
 		Set oFS = CreateObject("Scripting.FileSystemObject")
@@ -189,7 +209,7 @@ End If
 	End Sub
 
 	'**********************************************************************************
-	Private Sub GetScenariosAndSteps(arrFeatureLines, arrStepFunctionSpecs, arrStepFunctionCalls, arrStepText)
+	Private Function GetScenariosAndSteps(arrFeatureLines, arrStepFunctionSpecs, arrStepFunctionCalls, arrStepText, arrResults, arrXUnitResults)
 		Dim sLine, sFeature, sKeyword
 		Dim sStepType
 		Dim iLine, iNumLines, iLastStep
@@ -215,6 +235,10 @@ End If
 			Case "FEATURE:"
 				sStepType = "Feature"
 				sFeature = Replace(Trim(Right(sLine, Len(sLine) - Len("FEATURE:"))), " ", "_")
+				arrResults(0) = Now() & " " & "FEAT" & " " & sLine 
+				arrXUnitResults(0) = "<?xml version=""1.0"" encoding=""UTF-8""?>" & vbNewLine & _
+								 "<testsuites>" & vbNewLine & _
+								 "<testsuite name=""" & "Cucumber4VBSTestSuite" & """ tests=""[TESTS]"" errors=""[ERRORS]"" failures=""[FAILURES]"" skip=""[SKIP]"">"
 			Case "SCENARIO:", "SCENARIO", "BACKGROUND:"
 				If UCase(sKeyword) = "BACKGROUND:" Then giBackgroundBegin = iLine
 				sKeyword = Split(sLine, ":")(0)
@@ -288,8 +312,9 @@ End If
 		Call ShowDebugMsg(ArrayText(arrStepText))
 		Call ShowDebugMsg(ArrayText(arrStepFunctionSpecs))
 		Call ShowDebugMsg(ArrayText(arrStepFunctionCalls))
-
-	End Sub
+		
+		GetScenariosAndSteps = sFeature
+	End Function
 
 
 	'**********************************************************************************
@@ -300,8 +325,6 @@ End If
 		ReDim Preserve arrStepFunctionSpecs(iUBound + 1)
 		ReDim Preserve arrStepFunctionCalls(iUBound + 1)
 		ReDim Preserve arrStepText(iUBound + 1)
-		'arrStepFunctionSpecs(iUBound+1) = GenerateStepFunctionCallOrSpec("Spec", Replace(sStepText, ":", ""))
-		'arrStepFunctionCalls(iUBound+1) = GenerateStepFunctionCallOrSpec("Call", Replace(sStepText, ":", ""))
 		arrStepFunctionSpecs(iUBound+1) = GenerateStepFunctionCallOrSpec("Spec", sStepText)
 		arrStepFunctionCalls(iUBound+1) = GenerateStepFunctionCallOrSpec("Call", sStepText)
 		arrStepText(iUBound+1) = sStepText
@@ -310,25 +333,23 @@ End If
 	End Function
 	
 	'**********************************************************************************
-	Private Function ExecuteScenarios(ByVal iStartLine, ByVal iEndLine, ByVal arrStepFunctionSpecs, ByVal arrStepFunctionCalls, ByVal arrStepText, bRegenerateSpecs, sGeneratedSteps)
+	Private Function ExecuteScenarios(ByVal iStartLine, ByVal iEndLine, ByVal sFeature, ByVal arrStepFunctionSpecs, ByVal arrStepFunctionCalls, ByVal arrStepText, bRegenerateSpecs, sGeneratedSteps, ByRef arrResults, arrXUnitResults)', iResult)
 		Dim iStep, sStepText
 		Dim sGeneratedStep, bRetVal, sGeneratedReturn
 		Dim iIter, iIters, iBeginLine 
 		Dim sTableData, dicTableData, arrRows
 		Dim iCell, sCell, sRow, arrCellNames, arrCellValues
-		Dim arrTableData
+		Dim arrTableData, sStepResult, iResult, sScenario
 Dim sTempData
 		
-		bRetVal = False
-		
-		
+		'iResult = 0
 		For iStep = iStartLine To iEndLine
 		
 			Select Case Left(arrStepText(iStep), 7)
 			Case "X_BEGIN" 
-			
+				sScenario = arrStepText(iStep)
 				If giBackgroundBegin > -1 And iStartLine > giBackGroundBegin Then 
-					Call ExecuteScenarios(giBackgroundBegin, giBackgroundEnd, arrStepFunctionSpecs, arrStepFunctionCalls, arrStepText, bRegenerateSpecs, sGeneratedSteps)
+					Call ExecuteScenarios(giBackgroundBegin, giBackgroundEnd, sFeature, arrStepFunctionSpecs, arrStepFunctionCalls, arrStepText, bRegenerateSpecs, sGeneratedSteps, arrResults, arrXUnitResults)', iResult)
 				End If 
 
 				iIters = CInt(Replace(Split(arrStepText(iStep), "~~")(1), """", ""))'Number of iterations
@@ -355,37 +376,39 @@ Dim sTempData
 				iIter = iIter + 1 								'Next iteration
 				If iIter <= iIters Then 
 					If giBackgroundBegin > -1 And iStartLine > giBackGroundBegin Then 
-						Call ExecuteScenarios(giBackgroundBegin, giBackgroundEnd, arrStepFunctionSpecs, arrStepFunctionCalls, arrStepText, bRegenerateSpecs, sGeneratedSteps)
+						Call ExecuteScenarios(giBackgroundBegin, giBackgroundEnd, sFeature, arrStepFunctionSpecs, arrStepFunctionCalls, arrStepText, bRegenerateSpecs, sGeneratedSteps, arrResults, arrXUnitResults)
 					End If 
-
 					iStep = iBeginLine	'Iterate the scenario
-					
 				End if
 				
 			Case Else 
-			
 				sGeneratedStep = ""
 				sGeneratedReturn = "False"
 				If Left(arrStepFunctionSpecs(iStep), 1) = "X" Then sGeneratedReturn = "True"
-				
 				If Not bRegenerateSpecs Then		
-					'MsgBox arrStepFunctionCalls(iStep),,"********************"
+					bRetVal = False : sStepResult = "FAIL"
 On Error Resume Next
-					'sTempData = ReplaceParameters(arrStepFunctionCalls(iStep), arrTableData(iIter-1))
-					'If sTempData <> arrStepFunctionCalls(iStep) Then MsgBox sTempData,,arrStepFunctionCalls(iStep)
-					'MsgBox sTempData & vbNewLine & arrStepFunctionCalls(iStep),,"********************"
-'msgbox "bRetVal = " & ReplaceParameters(arrStepFunctionCalls(iStep), arrTableData(iIter-1))
-				
 					Execute "bRetVal = " & ReplaceParameters(arrStepFunctionCalls(iStep), arrTableData(iIter-1))
 					If Err.Number = 13 Then
+						sStepResult = "NDEF"
 						If Not gdicStepFunctionsCreated.Exists(arrStepFunctionSpecs(iStep)) Then 
 							gdicStepFunctionsCreated.Add arrStepFunctionSpecs(iStep), "Created"
 							sGeneratedStep = GenerateStepFunctionCode("Step function not found", arrStepFunctionSpecs(iStep), arrStepText(iStep), sGeneratedReturn)
 							ShowDebugMsg sGeneratedStep
 						End if
-					Else 
+					Else
+						If bRetVal = True Then sStepResult = "PASS"
 						'ShowDebugMsg bRetVal
 					End If
+					
+					iResult = UBound(arrResults) + 1
+					ReDim Preserve arrResults(iResult)
+					ReDim Preserve arrXUnitResults(iResult)
+					arrResults(iResult) = Now() & " " & sStepResult & " " & arrStepText(iStep) 
+					
+					arrXUnitResults(iResult) = "<testcase classname=""" & sFeature & """ name=""" & iResult & "-" & ReplaceChars(arrStepText(iStep), Array("""='", "<=[", ">=]")) & """ time=""0"">" & vbNewLine 
+					if bRetVal = False Then arrXUnitResults(iResult) = arrXUnitResults(iResult) & "<error type=""exception"" message=""error message"">"  & "FAIL" & "</error>" & vbNewLine
+					arrXUnitResults(iResult) = arrXUnitResults(iResult) & "</testcase>"
 On Error Goto 0
 				Else
 					If Not gdicStepFunctionsCreated.Exists(arrStepFunctionSpecs(iStep)) Then 
@@ -480,8 +503,22 @@ On Error Goto 0
 '******************************************************************************
 End Class
 
-
-
+'******************************************************************************
+' arrReplacements is an array of name=value pairs. eg Array("""='", "<=[", ">=]")
+'******************************************************************************
+Function ReplaceChars(ByVal sString, ByVal arrReplacements)
+	Dim sRep
+	Dim sRetVal
+	
+	sRetVal = sString
+	
+	For Each sRep In arrReplacements
+		sRetVal = Replace(sRetVal, Split(sRep , "=")(0), Split(sRep, "=")(1))
+	Next
+	
+	ReplaceChars = sRetVal
+	
+End Function
 '******************************************************************************
 '******************************************************************************
 Sub FileExecuteGlobal(sFile)

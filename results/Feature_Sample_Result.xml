@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+<testsuite name="Cucumber4VBSTestSuite" tests="[TESTS]" errors="[ERRORS]" failures="[FAILURES]" skip="[SKIP]">
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="1-X_Background: do this before each scenario" time="0">
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="2-Given I am ready " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="3-When I do something " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="4-Then it happens " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="5-X_Scenario: This is the first sample scenario being run" time="0">
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="6-Given a client that has a name of 'mr' and 'client' " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="7-When I run this first scenario " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="8-When And I look at the 'contents' of the output " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="9-Then I see that [cucumber4vbs] is working " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="10-X_Background: do this before each scenario" time="0">
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="11-Given I am ready " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="12-When I do something " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="13-Then it happens " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="14-X_Scenario: This is the second sample scenario being run" time="0">
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="15-Given I have provide this 'value' to the test " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="16-When I try to pass values 'one' and 'two' as parameters " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="17-When And I also pass the following: '|namex|addressx|phonex|~|abcx| defx | 123456x|~|xyzxyzx|lmnopx|654321x|'" time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="18-When And I try to check if it really works 'well' " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="19-Then I know the parser is working " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="20-Then And I know the 'values' are read " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="21-Then But it should also have 'one' and: '|value|~|xxxxx|'" time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="22-X_Background: do this before each scenario" time="0">
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="23-Given I am ready " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="24-When I do something " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="25-Then it happens " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="26-X_Scenario Outline: This is the third sample scenario being run" time="0">
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="27-Given I have provide this 'value' to the test " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="28-When I try to pass values [name] and [address] and [phone] as parameters " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="29-Then I know the parser is working " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="30-X_Examples: '|name|address|phone|~|abc| def | 123456|~|xyzxyz|lmnop|654321|'" time="0">
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="31-X_Background: do this before each scenario" time="0">
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="32-Given I am ready " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="33-When I do something " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="34-Then it happens " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="35-X_Scenario Outline: This is the third sample scenario being run" time="0">
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="36-Given I have provide this 'value' to the test " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="37-When I try to pass values [name] and [address] and [phone] as parameters " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="38-Then I know the parser is working " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+<testcase classname="Sample_feature_to_test_cucumber4vbs" name="39-X_Examples: '|name|address|phone|~|abc| def | 123456|~|xyzxyz|lmnop|654321|'" time="0">
+</testcase>
+</testsuite>
+</testsuites>

@@ -1,0 +1,12 @@
+17/01/2016 16:53:40 FEAT Feature: Demonstrate a Chrome test using Selenium
+17/01/2016 16:53:40 PASS X_Scenario: Google search
+17/01/2016 16:53:40 PASS Given the browser is open 
+17/01/2016 16:53:43 PASS When I navigate to "https://www.google.co.uk" 
+17/01/2016 16:53:43 PASS When And I search for "Eiffel Tower" 
+17/01/2016 16:53:49 PASS Then the browser title contains "Eiffel Tower" 
+17/01/2016 16:53:49 PASS X_Scenario: Google search
+17/01/2016 16:53:49 PASS Given the browser is open 
+17/01/2016 16:53:51 PASS When I navigate to "https://www.google.co.uk" 
+17/01/2016 16:53:51 PASS When And I search for "Ghent" 
+17/01/2016 16:53:53 PASS Then the browser title contains "Ghent" 
+17/01/2016 16:53:53 FAIL Then But it does not contain "qwerty" 

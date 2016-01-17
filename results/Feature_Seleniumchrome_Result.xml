@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+<testsuite name="Cucumber4VBSTestSuite" tests="[TESTS]" errors="[ERRORS]" failures="[FAILURES]" skip="[SKIP]">
+<testcase classname="Demonstrate_a_Chrome_test_using_Selenium" name="1-X_Scenario: Google search" time="0">
+</testcase>
+<testcase classname="Demonstrate_a_Chrome_test_using_Selenium" name="2-Given the browser is open " time="0">
+</testcase>
+<testcase classname="Demonstrate_a_Chrome_test_using_Selenium" name="3-When I navigate to 'https://www.google.co.uk' " time="0">
+</testcase>
+<testcase classname="Demonstrate_a_Chrome_test_using_Selenium" name="4-When And I search for 'Eiffel Tower' " time="0">
+</testcase>
+<testcase classname="Demonstrate_a_Chrome_test_using_Selenium" name="5-Then the browser title contains 'Eiffel Tower' " time="0">
+</testcase>
+<testcase classname="Demonstrate_a_Chrome_test_using_Selenium" name="6-X_Scenario: Google search" time="0">
+</testcase>
+<testcase classname="Demonstrate_a_Chrome_test_using_Selenium" name="7-Given the browser is open " time="0">
+</testcase>
+<testcase classname="Demonstrate_a_Chrome_test_using_Selenium" name="8-When I navigate to 'https://www.google.co.uk' " time="0">
+</testcase>
+<testcase classname="Demonstrate_a_Chrome_test_using_Selenium" name="9-When And I search for 'Ghent' " time="0">
+</testcase>
+<testcase classname="Demonstrate_a_Chrome_test_using_Selenium" name="10-Then the browser title contains 'Ghent' " time="0">
+</testcase>
+<testcase classname="Demonstrate_a_Chrome_test_using_Selenium" name="11-Then But it does not contain 'qwerty' " time="0">
+<error type="exception" message="error message">FAIL</error>
+</testcase>
+</testsuite>
+</testsuites>

@@ -1,5 +1,5 @@
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function X_Background_do_this_before_each_scenario()
@@ -9,7 +9,7 @@ Function X_Background_do_this_before_each_scenario()
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function Given_I_am_ready()
@@ -19,7 +19,7 @@ Function Given_I_am_ready()
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function When_I_do_something()
@@ -29,7 +29,7 @@ Function When_I_do_something()
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function Then_it_happens()
@@ -39,7 +39,7 @@ Function Then_it_happens()
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function X_Scenario_This_is_the_first_sample_scenario_being_run()
@@ -49,7 +49,7 @@ Function X_Scenario_This_is_the_first_sample_scenario_being_run()
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function Given_a_client_that_has_a_name_of_Arg1_and_Arg2(Arg1, Arg2)
@@ -59,7 +59,7 @@ Function Given_a_client_that_has_a_name_of_Arg1_and_Arg2(Arg1, Arg2)
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function When_I_run_this_first_scenario()
@@ -69,7 +69,7 @@ Function When_I_run_this_first_scenario()
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function When_And_I_look_at_the_Arg1_of_the_output(Arg1)
@@ -79,7 +79,7 @@ Function When_And_I_look_at_the_Arg1_of_the_output(Arg1)
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function Then_I_see_that_cucumber4vbs_is_working(pCucumber4vbs)
@@ -89,7 +89,7 @@ Function Then_I_see_that_cucumber4vbs_is_working(pCucumber4vbs)
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function X_Scenario_This_is_the_second_sample_scenario_being_run()
@@ -99,7 +99,7 @@ Function X_Scenario_This_is_the_second_sample_scenario_being_run()
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function Given_I_have_provide_this_Arg1_to_the_test(Arg1)
@@ -109,7 +109,7 @@ Function Given_I_have_provide_this_Arg1_to_the_test(Arg1)
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function When_I_try_to_pass_values_Arg1_and_Arg2_as_parameters(Arg1, Arg2)
@@ -119,7 +119,7 @@ Function When_I_try_to_pass_values_Arg1_and_Arg2_as_parameters(Arg1, Arg2)
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function When_And_I_also_pass_the_following_Arg1(Arg1)
@@ -129,7 +129,7 @@ Function When_And_I_also_pass_the_following_Arg1(Arg1)
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function When_And_I_try_to_check_if_it_really_works_Arg1(Arg1)
@@ -139,7 +139,7 @@ Function When_And_I_try_to_check_if_it_really_works_Arg1(Arg1)
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function Then_I_know_the_parser_is_working()
@@ -149,7 +149,7 @@ Function Then_I_know_the_parser_is_working()
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function Then_And_I_know_the_Arg1_are_read(Arg1)
@@ -159,7 +159,7 @@ Function Then_And_I_know_the_Arg1_are_read(Arg1)
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function Then_But_it_should_also_have_Arg1_and_Arg2(Arg1, Arg2)
@@ -169,7 +169,7 @@ Function Then_But_it_should_also_have_Arg1_and_Arg2(Arg1, Arg2)
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function X_Scenario_Outline_This_is_the_third_sample_scenario_being_run()
@@ -179,7 +179,7 @@ Function X_Scenario_Outline_This_is_the_third_sample_scenario_being_run()
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function When_I_try_to_pass_values_name_and_address_and_phone_as_parameters(pName, pAddress, pPhone)
@@ -189,7 +189,7 @@ Function When_I_try_to_pass_values_name_and_address_and_phone_as_parameters(pNam
 End Function
 
 '***********************************************************************
-'Generated on 14/01/2016 12:35:37
+'Generated on 16/01/2016 11:23:36
 'Step function not found. Template function generated below ...
 '***********************************************************************
 Function X_Examples_Arg1(Arg1)

@@ -1,0 +1,40 @@
+17/01/2016 16:53:21 FEAT Feature: Sample feature to test cucumber4vbs
+17/01/2016 16:53:24 PASS X_Background: do this before each scenario
+17/01/2016 16:53:25 FAIL Given I am ready 
+17/01/2016 16:53:25 FAIL When I do something 
+17/01/2016 16:53:25 FAIL Then it happens 
+17/01/2016 16:53:25 PASS X_Scenario: This is the first sample scenario being run
+17/01/2016 16:53:26 FAIL Given a client that has a name of "mr" and "client" 
+17/01/2016 16:53:26 FAIL When I run this first scenario 
+17/01/2016 16:53:26 FAIL When And I look at the "contents" of the output 
+17/01/2016 16:53:26 FAIL Then I see that <cucumber4vbs> is working 
+17/01/2016 16:53:26 PASS X_Background: do this before each scenario
+17/01/2016 16:53:27 FAIL Given I am ready 
+17/01/2016 16:53:27 FAIL When I do something 
+17/01/2016 16:53:27 FAIL Then it happens 
+17/01/2016 16:53:27 PASS X_Scenario: This is the second sample scenario being run
+17/01/2016 16:53:28 FAIL Given I have provide this "value" to the test 
+17/01/2016 16:53:28 FAIL When I try to pass values "one" and "two" as parameters 
+17/01/2016 16:53:28 FAIL When And I also pass the following: "|namex|addressx|phonex|~|abcx| defx | 123456x|~|xyzxyzx|lmnopx|654321x|"
+17/01/2016 16:53:29 FAIL When And I try to check if it really works "well" 
+17/01/2016 16:53:29 FAIL Then I know the parser is working 
+17/01/2016 16:53:29 FAIL Then And I know the "values" are read 
+17/01/2016 16:53:30 FAIL Then But it should also have "one" and: "|value|~|xxxxx|"
+17/01/2016 16:53:30 PASS X_Background: do this before each scenario
+17/01/2016 16:53:31 FAIL Given I am ready 
+17/01/2016 16:53:31 FAIL When I do something 
+17/01/2016 16:53:32 FAIL Then it happens 
+17/01/2016 16:53:32 PASS X_Scenario Outline: This is the third sample scenario being run
+17/01/2016 16:53:33 FAIL Given I have provide this "value" to the test 
+17/01/2016 16:53:33 FAIL When I try to pass values <name> and <address> and <phone> as parameters 
+17/01/2016 16:53:34 FAIL Then I know the parser is working 
+17/01/2016 16:53:34 PASS X_Examples: "|name|address|phone|~|abc| def | 123456|~|xyzxyz|lmnop|654321|"
+17/01/2016 16:53:35 PASS X_Background: do this before each scenario
+17/01/2016 16:53:35 FAIL Given I am ready 
+17/01/2016 16:53:36 FAIL When I do something 
+17/01/2016 16:53:36 FAIL Then it happens 
+17/01/2016 16:53:37 PASS X_Scenario Outline: This is the third sample scenario being run
+17/01/2016 16:53:37 FAIL Given I have provide this "value" to the test 
+17/01/2016 16:53:38 FAIL When I try to pass values <name> and <address> and <phone> as parameters 
+17/01/2016 16:53:38 FAIL Then I know the parser is working 
+17/01/2016 16:53:39 PASS X_Examples: "|name|address|phone|~|abc| def | 123456|~|xyzxyz|lmnop|654321|"
