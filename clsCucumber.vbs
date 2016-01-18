@@ -3,7 +3,7 @@ Option Explicit
 Dim oCucumber : Set oCucumber = New clsCucumber
 
 oCucumber.FeaturesPath = ".\features"
-'oCucumber.FeaturesList = "SeleniumChrome"
+oCucumber.FeaturesList = "SeleniumChrome"
 
 oCucumber.StepsPath = ".\steps"
 oCucumber.ResultsPath = ".\results"
@@ -99,7 +99,7 @@ Class clsCucumber
 		gsFeaturesPath = sPath & "/features"
 		gsFeaturesList = ""
 		gsStepsPath = sPath & "/steps"
-		gsStepsPath = sPath & "/results"
+		gsResultsPath = sPath & "/results"
 		gbRegenerateSpecs = False
 		gsGeneratedSteps = ""
 		giBackgroundBegin = -1
