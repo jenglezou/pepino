@@ -1,16 +1,16 @@
 Option Explicit
 
-Dim oCucumber : Set oCucumber = New clsCucumber
+'Dim oCucumber : Set oCucumber = New clsCucumber
 
-oCucumber.FeaturesPath = ".\features"
-oCucumber.FeaturesList = "SeleniumChrome"
+'oCucumber.FeaturesPath = ".\features"
+'oCucumber.FeaturesList = "SeleniumChrome"
 
-oCucumber.StepsPath = ".\steps"
-oCucumber.ResultsPath = ".\results"
-'oCucumber.RegenerateSpecs = True
-'oCucumber.ShowDebug = True
+'oCucumber.StepsPath = ".\steps"
+'oCucumber.ResultsPath = ".\results"
+''oCucumber.RegenerateSpecs = True
+''oCucumber.ShowDebug = True
 
-oCucumber.Run()
+'oCucumber.Run()
 
 Class clsCucumber
 '**********************************************************************************
@@ -165,8 +165,8 @@ WriteFile gsStepsPath & "\" & "Feature_" & Capitalise(Left(oFile.Name, Len(oFile
 					If giBackgroundBegin > -1 Then iStartLine = giBackgroundEnd + 1
 					iEndLine = UBound(garrStepText)
 					gsGeneratedSteps = ""
-					MsgBox "Executed " & oFile.Name & vbnewline & "Result = " & _
-						ExecuteScenarios(iStartLine, iEndLine, sFeature, garrStepFunctionSpecs, garrStepFunctionCalls, garrStepText, gbRegenerateSpecs, gsGeneratedSteps, garrResults, garrXUnitResults)', iResult)				
+					'MsgBox "Executed " & oFile.Name & vbnewline & "Result = " & _
+						call ExecuteScenarios(iStartLine, iEndLine, sFeature, garrStepFunctionSpecs, garrStepFunctionCalls, garrStepText, gbRegenerateSpecs, gsGeneratedSteps, garrResults, garrXUnitResults)', iResult)				
 
 WriteFile gsResultsPath & "\" & "Feature_" & Capitalise(Left(oFile.Name, Len(oFile.Name) - Len(".Feature"))) & "_Result.txt" , ArrayText(garrResults), 2
 WriteFile gsResultsPath & "\" & "Feature_" & Capitalise(Left(oFile.Name, Len(oFile.Name) - Len(".Feature"))) & "_Result.xml" , ArrayText(garrXUnitResults) & "</testsuite>" & vbNewLine & "</testsuites>", 2
@@ -287,11 +287,13 @@ WriteFile gsResultsPath & "\" & "Feature_" & Capitalise(Left(oFile.Name, Len(oFi
 				Do While Left(sNextLine, 1) = "|"
 					sTable = sTable & sNextLine & "~"
 					iLine = iLine + 1
-					If iLine = iNumLines Then Exit Do 			'In case it's the last row
 					iScenarioIterations = iScenarioIterations + 1
+					If iLine = iNumLines Then Exit Do 			'In case it's the last row
 					sNextLine = Trim(Replace(arrFeatureLines(iLine + 1), vbTab, " "))
 				Loop
+				iScenarioIterations = iScenarioIterations - 1	'Number of iterations 
 				iLine = iLine - 1								'Finished the table so jump back a line
+
 				sTable = Left(sTable, Len(sTable) - 1) & """"	'Remove the end comma and add a double quote
 
 				arrStepFunctionSpecs(iScenarioStartLine) = GenerateStepFunctionCallOrSpec("Spec", "X_BEGINSCENARIO" &  Right("00" & iScenarioNumber, 2) & " """ & iScenarioIterations & """ " & sTable)
@@ -452,8 +454,10 @@ On Error Goto 0
 		arrTokens = Split(Replace(sStepFunctionText, ">", "<"), "<")
 		For iToken = 1 To UBound(arrTokens) Step 2
 			iArgCount = iArgCount+1
-			sStepFunctionText = Replace(sStepFunctionText, "<" & arrTokens(iToken) & ">", arrTokens(iToken))
+			'sStepFunctionText = Replace(sStepFunctionText, "<" & arrTokens(iToken) & ">", arrTokens(iToken))
+			sStepFunctionText = Replace(sStepFunctionText, "<" & arrTokens(iToken) & ">", "Arg" & iArgCount)
 			If UCase(Left(sCallOrSpec, 1)) = "S" Then
+				'sArgs = sArgs & ", Arg" & iArgCount									'Spec
 				sArgs = sArgs & ", " & "p" & Capitalise(arrTokens(iToken))			'Spec
 			Else
 				sArgs = sArgs & ", " & """<" & arrTokens(iToken) & ">"""			'Call
@@ -602,35 +606,3 @@ Sub ShowDebugMsg(sText)
 End Sub
 
 '**********************************************************************************
-
-Dim sXUnitFileText, sXUnitTestSuiteName, sXUnitTestClassName, sXUnitStepRow, sXUnitStepName
-
-Function XUnitTestIntro(sXUnitFileText, sXUnitTestSuiteName)
-
-	sXUnitTestSuiteName = "AutomatedTestSuite"
-	sXUnitFileText = "<?xml version=""1.0"" encoding=""UTF-8""?>" & vbNewLine & _
-					 "<testsuites>" & vbNewLine & _
-					 "<testsuite name=""" & sXUnitTestSuiteName & """ tests=""[TESTS]"" errors=""[ERRORS]"" failures=""[FAILURES]"" skip=""[SKIP]"">" & vbNewLine
-End Function
-
-Function XUnitTestStep(sXUnitFileText, sXUnitTestSuiteName, sXUnitTestClassName, sXUnitStepName)
-	sXUnitTestClassName = sXUnitTestSuiteName & "." & oFso.GetBaseName(sWorkbook)
-	'***** For xUnit reporting ********
-	sXUnitStepName = CStr(oRow.Cells(1, XL_KEYWORD))
-	sXUnitStepRow = right("0" & oRow.Row, 2)
-	if sXUnitStepName <> "" then
-		sXUnitFileText = sXUnitFileText & "<testcase classname=""" & sXUnitTestClassName & """ name=""Step" & sXUnitStepRow & "-" & sXUnitStepName & """ time=""0"">" & vbNewLine 
-		if iRetval = XL_DISPATCH_FAIL or iRetval = XL_DISPATCH_FAILCONTINUE then
-			sXUnitFileText = sXUnitFileText & "<error type=""exception"" message=""error message"">" & vbNewLine & sLog & vbNewLine & "</error>" & vbNewLine
-		end if 
-		sXUnitFileText = sXUnitFileText & "</testcase>" & vbNewLine
-	End If
-	'***** For xUnit reporting ********
-End Function
-
-Function XUnitTestClose(sXUnitFileText)	
-	sXUnitFileText = sXUnitFileText & _
-					"</testsuite>" & vbNewLine & _
-					"</testsuites>" 
-End Function
-
